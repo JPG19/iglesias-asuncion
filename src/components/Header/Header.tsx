@@ -48,13 +48,19 @@ const Header = () => {
       global.navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          console.log('my position:', position);
+          console.log('My position:', position);
           setCurrentPosition({ lat: latitude, lng: longitude });
         },
-        error,
+        (err) => {
+          console.error('Geolocation error:', err);
+          if (err.message === "User denied Geolocation") {
+            setCurrentPosition({ error: err.message });
+          }
+        },
         options
       );
     }
+    
   }, [setCurrentPosition]);
 
   // If the user doesn't have a photo, he is the administrator

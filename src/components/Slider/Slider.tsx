@@ -64,10 +64,13 @@ const Slider = ({ content = [] }: any) => {
                   <p>
                     <AccessTimeFilledIcon /> {church.Schedule}
                   </p>
-                  <p>
-                    <DirectionsRunIcon />
-                    {`${church.distance}km`}
-                  </p>
+
+                  {"distance" in church ? (
+                    <p>
+                      <DirectionsRunIcon />
+                      {`${church.distance}km`}
+                    </p>
+                  ) : null}
                 </div>
               </Link>
             </SwiperSlide>

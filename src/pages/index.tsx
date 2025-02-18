@@ -68,7 +68,7 @@ function calculateDistances(churches: Church[], myLocation: any): any {
 }
 
 export default function Home({ churches }: any) {
-  const [allChurches, setAllChurches] = useState<any>([]);
+  const [updatedChurches, setUpdatedChurches] = useState<any>([]);
   const [filteredChurches, setFilteredChurches] = useState<any>([]);
   const [activeInput, setActiveInput] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
@@ -79,56 +79,68 @@ export default function Home({ churches }: any) {
   const { currentPosition } = useContext(MyContext);
 
   // Handle search input changes
-  const handleSearch = (
-    key: string,
-    value: string | number | boolean | null
-  ) => {
-    // Update filter state
-    if (value !== undefined && value !== null && value !== "") {
-      filter.current[key] = value;
-    } else {
-      delete filter.current[key];
-    }
+  const handleSearch = useCallback(
+    (key: string, value: string | number | boolean | null) => {
+      // Update filter state
+      if (value !== undefined && value !== null && value !== "") {
+        filter.current[key] = value;
+      } else {
+        delete filter.current[key];
+      }
 
-    const filterKeys = Object.keys(filter.current);
+      const filterKeys = Object.keys(filter.current);
 
-    // Filter churches based on search term
-    const filtered = churches.filter((church: any) => {
-      let checks = 0;
-      filterKeys.forEach((k) => {
-        const filterValue = filter.current[k];
+      // Filter churches based on search term
+      const filtered = updatedChurches.filter((church: any) => {
+        let checks = 0;
+        filterKeys.forEach((k) => {
+          const filterValue = filter.current[k];
 
-        if (
-          typeof filterValue === "string" &&
-          church[k].toLowerCase().includes(filterValue)
-        ) {
-          checks = checks + 1;
-        } else if (
-          typeof filterValue === "number" &&
-          filterValue >= church[k]
-        ) {
-          // It's distance
-          checks = checks + 1;
-        }
-        if (typeof filterValue === "boolean" && church[k] === filterValue) {
-          checks = checks + 1;
-        }
+          if (
+            typeof filterValue === "string" &&
+            church[k].toLowerCase().includes(filterValue)
+          ) {
+            checks = checks + 1;
+          } else if (
+            typeof filterValue === "number" &&
+            filterValue >= church[k]
+          ) {
+            // It's distance
+            checks = checks + 1;
+          }
+          if (typeof filterValue === "boolean" && church[k] === filterValue) {
+            checks = checks + 1;
+          }
+        });
+
+        return checks === filterKeys.length;
       });
 
-      return checks === filterKeys.length;
-    });
-
-    setFilteredChurches(filtered);
-  };
+      setFilteredChurches(filtered);
+    },
+    [filter, updatedChurches, setFilteredChurches]
+  );
 
   useEffect(() => {
-    if (currentPosition?.lat && currentPosition?.lng) {
-      let updatedChurchesArray = calculateDistances(churches, currentPosition);
-      setAllChurches(updatedChurchesArray);
-      handleSearch("distance", 50);
-      setInitialLoading(false);
+    if (
+      (currentPosition?.lat && currentPosition?.lng) ||
+      currentPosition.error
+    ) {
+      if (currentPosition.error) {
+        setUpdatedChurches(churches);
+        setFilteredChurches(churches);
+        setInitialLoading(false);
+      } else {
+        const updatedChurchesArray = calculateDistances(
+          churches,
+          currentPosition
+        );
+        setUpdatedChurches(updatedChurchesArray);
+        handleSearch("distance", 50);
+        setInitialLoading(false);
+      }
     }
-  }, [churches, currentPosition]);
+  }, [churches, currentPosition, handleSearch]);
 
   return (
     <>
@@ -160,7 +172,9 @@ export default function Home({ churches }: any) {
             ref={searchInputRef}
           />
 
-          <DraggableSlider handleSearch={handleSearch} />
+          {currentPosition.error ? null : (
+            <DraggableSlider handleSearch={handleSearch} />
+          )}
 
           <div className="dropdown-container flex justify-center gap-4 pt-4">
             <Dropdown
