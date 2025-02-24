@@ -17,58 +17,7 @@ interface Church {
   Location: string; // Format: "latitude, longitude"
 }
 
-// Function to calculate distance using Haversine formula
-function calculateDistances(churches: Church[], myLocation: any): any {
-  const newChurchesArray: any = [];
-
-  const myLat = myLocation.lat;
-  const myLng = myLocation.lng;
-
-  // Function to calculate distance between two points using Haversine formula
-  function getDistanceInKm(
-    lat1: number,
-    lon1: number,
-    lat2: number,
-    lon2: number
-  ): number {
-    const R = 6371; // Radius of the Earth in kilometers
-    const dLat = ((lat2 - lat1) * Math.PI) / 180;
-    const dLon = ((lon2 - lon1) * Math.PI) / 180;
-
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos((lat1 * Math.PI) / 180) *
-        Math.cos((lat2 * Math.PI) / 180) *
-        Math.sin(dLon / 2) *
-        Math.sin(dLon / 2);
-
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const distance = R * c; // Distance in km
-
-    return distance;
-  }
-
-  // Calculate and print distance for each church
-  churches.forEach((church) => {
-    const [churchLat, churchLng] = church.Location.split(",").map((coord) =>
-      parseFloat(coord.trim())
-    );
-    console.log("🚀 ~ calculateDistances ~ churchLng:", churchLng);
-    console.log("🚀 ~ calculateDistances ~ churchLat:", churchLat);
-    const distance = getDistanceInKm(myLat, myLng, churchLat, churchLng);
-    const updatedChurch = Object.assign(church);
-    updatedChurch.distance = Math.round(distance);
-    newChurchesArray.push(updatedChurch);
-    console.log(
-      `${church.Name} has ${distance.toFixed(2)} kilometers of distance`
-    );
-  });
-
-  return newChurchesArray;
-}
-
 export default function Home({ churches }: any) {
-  const [updatedChurches, setUpdatedChurches] = useState<any>([]);
   const [filteredChurches, setFilteredChurches] = useState<any>([]);
   const [activeInput, setActiveInput] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
@@ -76,7 +25,7 @@ export default function Home({ churches }: any) {
   const filter = useRef<{ [key: string]: string | number | boolean | null }>(
     {}
   ); // Initialize as an empty object
-  const { currentPosition } = useContext(MyContext);
+  const { churchesWithLocation } = useContext(MyContext);
 
   // Handle search input changes
   const handleSearch = useCallback(
@@ -89,58 +38,46 @@ export default function Home({ churches }: any) {
       }
 
       const filterKeys = Object.keys(filter.current);
-
       // Filter churches based on search term
-      const filtered = updatedChurches.filter((church: any) => {
-        let checks = 0;
-        filterKeys.forEach((k) => {
-          const filterValue = filter.current[k];
+      if (churchesWithLocation) {
+        const filtered = churchesWithLocation.filter((church: any) => {
+          let checks = 0;
+          filterKeys.forEach((k) => {
+            const filterValue = filter.current[k];
 
-          if (
-            typeof filterValue === "string" &&
-            church[k].toLowerCase().includes(filterValue)
-          ) {
-            checks = checks + 1;
-          } else if (
-            typeof filterValue === "number" &&
-            filterValue >= church[k]
-          ) {
-            // It's distance
-            checks = checks + 1;
-          }
-          if (typeof filterValue === "boolean" && church[k] === filterValue) {
-            checks = checks + 1;
-          }
+            if (
+              typeof filterValue === "string" &&
+              church[k].toLowerCase().includes(filterValue)
+            ) {
+              checks = checks + 1;
+            } else if (
+              typeof filterValue === "number" &&
+              filterValue >= church[k]
+            ) {
+              // It's distance
+              checks = checks + 1;
+            }
+            if (typeof filterValue === "boolean" && church[k] === filterValue) {
+              checks = checks + 1;
+            }
+          });
+
+          return checks === filterKeys.length;
         });
-
-        return checks === filterKeys.length;
-      });
-
-      setFilteredChurches(filtered);
+        setFilteredChurches(filtered);
+      }
     },
-    [filter, updatedChurches, setFilteredChurches]
+    [churchesWithLocation]
   );
 
   useEffect(() => {
-    if (
-      (currentPosition?.lat && currentPosition?.lng) ||
-      currentPosition.error
-    ) {
-      if (currentPosition.error) {
-        setUpdatedChurches(churches);
-        setFilteredChurches(churches);
-        setInitialLoading(false);
-      } else {
-        const updatedChurchesArray = calculateDistances(
-          churches,
-          currentPosition
-        );
-        setUpdatedChurches(updatedChurchesArray);
+    if (churchesWithLocation) {
+      setTimeout(() => {
         handleSearch("distance", 50);
         setInitialLoading(false);
-      }
+      }, 1000);
     }
-  }, [churches, currentPosition, handleSearch]);
+  }, [churchesWithLocation]);
 
   return (
     <>
@@ -172,9 +109,7 @@ export default function Home({ churches }: any) {
             ref={searchInputRef}
           />
 
-          {currentPosition.error ? null : (
-            <DraggableSlider handleSearch={handleSearch} />
-          )}
+          <DraggableSlider handleSearch={handleSearch} />
 
           <div className="dropdown-container flex justify-center gap-4 pt-4">
             <Dropdown
