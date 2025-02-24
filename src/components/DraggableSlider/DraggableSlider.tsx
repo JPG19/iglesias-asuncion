@@ -2,7 +2,6 @@ import React, {
   useState,
   useRef,
   useEffect,
-  useCallback,
   useContext,
 } from "react";
 import { MyContext } from "../../../src/pages/_app";
