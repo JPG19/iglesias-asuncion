@@ -55,7 +55,7 @@ const Slider = ({ content = [] }: any) => {
                   width={500}
                   height={600}
                   priority={true}
-                  style={{ height: "300px", width: "100%" }}
+                  style={{ height: "300px", width: "100%", aspectRatio: '16/9' }}
                 />
                 <div className="p-2 text-white rounded-b-lg bg-red-900 below">
                   <h3>

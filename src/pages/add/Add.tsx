@@ -201,9 +201,6 @@ const Add = () => {
         <label>Horarios</label>
         <input type='text' name='Schedule' required />
 
-        <label>Protocolo de Salud</label>
-        <input type='text' name='HealthProtocol' required />
-
         <label>Capacidad</label>
         <input type='number' name='Capacity' required />
 

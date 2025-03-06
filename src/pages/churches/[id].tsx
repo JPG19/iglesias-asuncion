@@ -174,11 +174,6 @@ const Church = ({ church }: { church: ChurchType }) => {
               <p>{church.Capacity}</p>
             </div>
 
-            <div className="grid-item">
-              <h3>Protocolo de salud</h3>
-              <p>{church.HealthProtocol}</p>
-            </div>
-
             <div className="grid-item row">
               <h3>Bautismo</h3>
               <div>

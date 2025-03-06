@@ -5,7 +5,6 @@ export interface ChurchType {
     Schedule: string;
     Images: string[];
     Capacity: number;
-    HealthProtocol: string;
     Baptism: boolean;
     FirstCommunion: boolean;
     Confirmation: boolean;

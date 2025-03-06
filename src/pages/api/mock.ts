@@ -6,7 +6,6 @@ export const datosIglesias = [
     Schedule: 'Lunes a sabados de 9:00 a 14:00',
     Images: 'https://live.staticflickr.com/867/39251370590_9639779b29_b.jpg',
     Capacity: 50,
-    HealthProtocol: 'Uso de mascarilla obligatorio',
     Baptism: true,
     FirstCommunion: true,
     Confirmation: true,
@@ -22,7 +21,6 @@ export const datosIglesias = [
     Schedule: 'Lunes a sabados de 9:00 a 14:00',
     Images: ['https://live.staticflickr.com/867/39251370590_9639779b29_b.jpg'],
     Capacity: 50,
-    HealthProtocol: 'Uso de mascarilla obligatorio',
     Baptism: true,
     FirstCommunion: true,
     Confirmation: true,
@@ -39,7 +37,6 @@ export const datosIglesias = [
     Images:
       'https://th.bing.com/th/id/OIP.wWpsUPhhRyBqsCAl5vT5HQHaJ4?pid=ImgDet&rs=1',
     Capacity: 100,
-    HealthProtocol: 'Uso de mascarilla obligatorio',
     Baptism: false,
     FirstCommunion: false,
     Confirmation: false,
@@ -56,7 +53,6 @@ export const datosIglesias = [
     Images:
       'https://th.bing.com/th/id/OIP.wWpsUPhhRyBqsCAl5vT5HQHaJ4?pid=ImgDet&rs=1',
     Capacity: 100,
-    HealthProtocol: 'Uso de mascarilla obligatorio',
     Baptism: false,
     FirstCommunion: false,
     Confirmation: false,
@@ -73,7 +69,6 @@ export const datosIglesias = [
     Images:
       'https://th.bing.com/th/id/OIP.wWpsUPhhRyBqsCAl5vT5HQHaJ4?pid=ImgDet&rs=1',
     Capacity: 100,
-    HealthProtocol: 'Uso de mascarilla obligatorio',
     Baptism: false,
     FirstCommunion: false,
     Confirmation: false,
@@ -90,7 +85,6 @@ export const datosIglesias = [
     Images:
       'https://th.bing.com/th/id/OIP.wWpsUPhhRyBqsCAl5vT5HQHaJ4?pid=ImgDet&rs=1',
     Capacity: 100,
-    HealthProtocol: 'Uso de mascarilla obligatorio',
     Baptism: false,
     FirstCommunion: false,
     Confirmation: false,
@@ -107,7 +101,6 @@ export const datosIglesias = [
     Images:
       'https://th.bing.com/th/id/OIP.wWpsUPhhRyBqsCAl5vT5HQHaJ4?pid=ImgDet&rs=1',
     Capacity: 100,
-    HealthProtocol: 'Uso de mascarilla obligatorio',
     Baptism: false,
     FirstCommunion: false,
     Confirmation: false,
@@ -124,7 +117,6 @@ export const datosIglesias = [
     Images:
       'https://th.bing.com/th/id/OIP.wWpsUPhhRyBqsCAl5vT5HQHaJ4?pid=ImgDet&rs=1',
     Capacity: 100,
-    HealthProtocol: 'Uso de mascarilla obligatorio',
     Baptism: false,
     FirstCommunion: false,
     Confirmation: false,
@@ -142,7 +134,6 @@ export const datosIglesias = [
     Images:
       'https://th.bing.com/th/id/OIP.wWpsUPhhRyBqsCAl5vT5HQHaJ4?pid=ImgDet&rs=1',
     Capacity: 100,
-    HealthProtocol: 'Uso de mascarilla obligatorio',
     Baptism: false,
     FirstCommunion: false,
     Confirmation: false,
@@ -160,7 +151,6 @@ export const datosIglesias = [
     Images:
       'https://th.bing.com/th/id/OIP.wWpsUPhhRyBqsCAl5vT5HQHaJ4?pid=ImgDet&rs=1',
     Capacity: 100,
-    HealthProtocol: 'Uso de mascarilla obligatorio',
     Baptism: false,
     FirstCommunion: false,
     Confirmation: false,
@@ -178,7 +168,6 @@ export const datosIglesias = [
     Images:
       'https://th.bing.com/th/id/OIP.wWpsUPhhRyBqsCAl5vT5HQHaJ4?pid=ImgDet&rs=1',
     Capacity: 100,
-    HealthProtocol: 'Uso de mascarilla obligatorio',
     Baptism: false,
     FirstCommunion: false,
     Confirmation: false,
@@ -196,7 +185,6 @@ export const datosIglesias = [
     Images:
       'https://th.bing.com/th/id/OIP.wWpsUPhhRyBqsCAl5vT5HQHaJ4?pid=ImgDet&rs=1',
     Capacity: 100,
-    HealthProtocol: 'Uso de mascarilla obligatorio',
     Baptism: false,
     FirstCommunion: false,
     Confirmation: false,
