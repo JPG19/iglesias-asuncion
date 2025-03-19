@@ -18,14 +18,14 @@ interface Church {
 }
 
 export default function Home({ churches }: any) {
-  const [filteredChurches, setFilteredChurches] = useState<any>([]);
+  const [filteredChurches, setFilteredChurches] = useState<any>(churches);
   const [activeInput, setActiveInput] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
   const searchInputRef = useRef(null);
   const filter = useRef<{ [key: string]: string | number | boolean | null }>(
     {}
   ); // Initialize as an empty object
-  const { churchesWithLocation } = useContext(MyContext);
+  const { currentPosition, churchesWithLocation } = useContext(MyContext);
 
   // Handle search input changes
   const handleSearch = useCallback(
@@ -66,18 +66,16 @@ export default function Home({ churches }: any) {
         });
         setFilteredChurches(filtered);
       }
+      setInitialLoading(false);
     },
     [churchesWithLocation]
   );
 
   useEffect(() => {
-    if (churchesWithLocation) {
-      setTimeout(() => {
-        handleSearch("distance", 50);
-        setInitialLoading(false);
-      }, 1000);
+    if (churchesWithLocation && currentPosition.error) {
+      setInitialLoading(false);
     }
-  }, [churchesWithLocation]);
+  }, [churchesWithLocation, currentPosition]);
 
   return (
     <>
@@ -109,7 +107,9 @@ export default function Home({ churches }: any) {
             ref={searchInputRef}
           />
 
-          <DraggableSlider handleSearch={handleSearch} />
+          {Object.keys(currentPosition).length > 0 && !currentPosition.error ? (
+            <DraggableSlider handleSearch={handleSearch} />
+          ) : null}
 
           <div className="dropdown-container flex justify-center gap-4 pt-4">
             <Dropdown

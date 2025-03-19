@@ -20,6 +20,10 @@ const DraggableSlider = ({ handleSearch }: any) => {
     }, 500)
 
     debouncedValue()
+
+    return () => {
+      debouncedValue.cancel();
+    };
   }, [value, handleSearch]);
 
   useEffect(() => {
