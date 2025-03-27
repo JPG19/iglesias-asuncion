@@ -10,7 +10,11 @@ import type { AppProps } from "next/app";
 type MyContextType = {
   user: any;
   setUser(user: any): void;
-  currentPosition: any;
+  currentPosition: {
+    lat?: number
+    lng?: number
+    error?: string;
+  };
   setCurrentPosition(position: any): void;
   churchesWithLocation: any;
   setChurchesWithLocation: (churches: any) => void;
@@ -35,8 +39,8 @@ export const useMyContext = () => useContext(MyContext);
 function calculateDistances(churches: any, myLocation: any): any {
   const newChurchesArray: any = [];
 
-  const myLat = myLocation.latitude;
-  const myLng = myLocation.longitude;
+  const myLat = myLocation.lat;
+  const myLng = myLocation.lng;
 
   // Function to calculate distance between two points using Haversine formula
   function getDistanceInKm(
@@ -86,7 +90,7 @@ export const MyContextProvider = ({ children, churches }: any) => {
     global.navigator.geolocation?.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
-        setCurrentPosition({ latitude, longitude });
+        setCurrentPosition({ lat: latitude, lng: longitude });
       },
       (err) => {
         console.error("Geolocation error:", err);

@@ -45,7 +45,7 @@ const DraggableSlider = ({ handleSearch }: any) => {
     };
   }, [isDragging]);
 
-  if (!currentPosition.latitude || !currentPosition.longitude) {
+  if (!currentPosition.lat || !currentPosition.lng) {
     return null;
   }
 

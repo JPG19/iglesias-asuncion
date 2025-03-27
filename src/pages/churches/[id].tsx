@@ -73,11 +73,17 @@ const Church = ({ church }: { church: ChurchType }) => {
   }, [biggerThanLaptop]);
 
   const position = useMemo(() => {
-    const [latString, lngString] = church.Location?.split(",");
-    return {
-      lat: parseFloat(latString),
-      lng: parseFloat(lngString),
-    };
+    const [latString, lngString] = church.Location?.split(",") || [];
+    const lat = latString ? parseFloat(latString.trim()) : 0;
+    const lng = lngString ? parseFloat(lngString.trim()) : 0;
+
+    // Add validation to ensure we have valid numbers
+    if (isNaN(lat) || isNaN(lng)) {
+      console.warn(`Invalid location coordinates: ${church.Location}`);
+      return { lat: 0, lng: 0 }; // Default to 0,0 or your preferred fallback
+    }
+
+    return { lat, lng };
   }, [church]);
 
   // const { user } = useContext(MyContext);
@@ -153,7 +159,7 @@ const Church = ({ church }: { church: ChurchType }) => {
                     src={src}
                     alt={church.Name}
                     width={400}
-                    height={400}
+                    height={0}
                     priority={true}
                   />
                 </SwiperSlide>
@@ -242,7 +248,7 @@ const Church = ({ church }: { church: ChurchType }) => {
             <MarkerF position={position} />
             {/* Blue marker for the user's position */}
             {currentPosition && Object.keys(currentPosition).length > 0 ? (
-              <MarkerF position={currentPosition} icon={blueDotStyle} />
+              <MarkerF position={currentPosition as any} icon={blueDotStyle} />
             ) : null}
           </GoogleMap>
         ) : (
