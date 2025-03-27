@@ -29,7 +29,7 @@ const Dropdown = ({ text, type, name, handleSearch }: Props) => {
         }}
         label={`${dropdownValue ? 'CON' : 'SIN'}`}
         disabled={false}
-        id=""
+        id={`${text} ${name}`}
         className="pt-4"
         textClassName={dropdownValue ? 'text-white' : ''}
       />

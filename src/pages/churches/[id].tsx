@@ -7,6 +7,8 @@ import { useMediaQuery } from "react-responsive";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import EmailIcon from "@mui/icons-material/Email";
 // import useGeolocation from '@/hooks/useGeolocation';
+import Loading from "@/components/Loading";
+import ToggleSwitch from "../../components/ToggleSwitch";
 
 // Import Swiper styles
 import "swiper/css";
@@ -31,10 +33,8 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async (context: any) => {
   const id = context.params.id;
-  const churchesUrl = process.env.NEXT_PUBLIC_CHURCHES_API_URL
-  const res = await fetch(
-    `${churchesUrl}/${id}`
-  );
+  const churchesUrl = process.env.NEXT_PUBLIC_CHURCHES_API_URL;
+  const res = await fetch(`${churchesUrl}/${id}`);
   const church = await res.json();
 
   return {
@@ -121,7 +121,9 @@ const Church = ({ church }: { church: ChurchType }) => {
 
   // const isLoggedIn = Object.keys(user || {})?.length > 0;
 
-  if (!isLoaded) return <div>Loading...</div>;
+  if (!isLoaded) {
+    return <Loading />;
+  }
 
   const blueDotStyle = {
     path: google.maps.SymbolPath.CIRCLE,
@@ -160,7 +162,7 @@ const Church = ({ church }: { church: ChurchType }) => {
           })}
         </Swiper>
 
-        <div className="pt-5">
+        <div className="pt-5 text-center">
           <h2 className="text-2xl text-white font-bold">{church.Name}</h2>
 
           <div className="grid-container">
@@ -170,63 +172,49 @@ const Church = ({ church }: { church: ChurchType }) => {
             </div>
 
             <div className="grid-item">
-              <h3>Capacidad</h3>
-              <p>{church.Capacity}</p>
-            </div>
-
-            <div className="grid-item row">
-              <h3>Bautismo</h3>
-              <div>
-                <input
-                  style={{ width: "auto", transform: "scale(1.5)" }}
-                  type="checkbox"
-                  disabled={true}
-                  defaultChecked={church.Baptism}
-                />
-              </div>
-            </div>
-
-            <div className="grid-item row">
-              <h3>Primera Comunión</h3>
-              <div>
-                <input
-                  style={{ width: "auto", transform: "scale(1.5)" }}
-                  type="checkbox"
-                  disabled={true}
-                  defaultChecked={church.FirstCommunion}
-                />
-              </div>
-            </div>
-
-            <div className="grid-item row">
-              <h3>Confirmación</h3>
-              <div>
-                <input
-                  style={{ width: "auto", transform: "scale(1.5)" }}
-                  type="checkbox"
-                  disabled={true}
-                  defaultChecked={church.Confirmation}
-                />
-              </div>
-            </div>
-
-            <div className="grid-item row">
-              <h3>Boda</h3>
-              <div>
-                <input
-                  style={{ width: "auto", transform: "scale(1.5)" }}
-                  type="checkbox"
-                  disabled={true}
-                  defaultChecked={church.Wedding}
-                />
-              </div>
-            </div>
-
-            <div className="grid-item">
               <h3>Sacerdotes</h3>
               <p>{church.Priests.join(", ")}</p>
             </div>
+
+            <div className="grid-item">
+              <h3>Capacidad</h3>
+              <p>{church.Capacity} Asientos</p>
+            </div>
           </div>
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          <ToggleSwitch
+            checked={church.Baptism}
+            label="Bautismo"
+            disabled={true}
+            className="pt-4 flex-1 min-w-[300px]"
+            textClassName={church.Baptism ? "text-white" : ""}
+          />
+
+          <ToggleSwitch
+            checked={church.FirstCommunion}
+            label="Primera Comunión"
+            disabled={true}
+            className="pt-4 flex-1 min-w-[300px]"
+            textClassName={church.FirstCommunion ? "text-white" : ""}
+          />
+
+          <ToggleSwitch
+            checked={church.Confirmation}
+            label="Confirmación"
+            disabled={true}
+            className="pt-4 flex-1 min-w-[300px]"
+            textClassName={church.Confirmation ? "text-white" : ""}
+          />
+
+          <ToggleSwitch
+            checked={church.Wedding}
+            label="Boda"
+            disabled={true}
+            className="pt-4 flex-1 min-w-[300px]"
+            textClassName={church.Wedding ? "text-white" : ""}
+          />
         </div>
 
         <div className="pt-5 contact">

@@ -14,6 +14,7 @@ type MyContextType = {
   setCurrentPosition(position: any): void;
   churchesWithLocation: any;
   setChurchesWithLocation: (churches: any) => void;
+  getCurrentPosition: () => void;
 };
 
 // // Create the context with an initial value
@@ -24,6 +25,7 @@ export const MyContext = createContext<MyContextType>({
   setCurrentPosition: () => {},
   churchesWithLocation: [],
   setChurchesWithLocation: () => {},
+  getCurrentPosition: () => {}
 });
 
 // // Create a custom hook to access the context value
@@ -67,7 +69,7 @@ function calculateDistances(churches: any, myLocation: any): any {
     );
 
     const distance = getDistanceInKm(myLat, myLng, churchLat, churchLng);
-    const updatedChurch = Object.assign(church);
+    const updatedChurch = {...church}
     updatedChurch.distance = Math.round(distance);
     newChurchesArray.push(updatedChurch);
   });
@@ -80,6 +82,22 @@ export const MyContextProvider = ({ children, churches }: any) => {
   const [user, setUser] = useState({});
   const [currentPosition, setCurrentPosition] = useState<any>({});
   const [churchesWithLocation, setChurchesWithLocation] = useState(null);
+  const getCurrentPosition = () => {
+    global.navigator.geolocation?.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        setCurrentPosition({ latitude, longitude });
+      },
+      (err) => {
+        console.error("Geolocation error:", err);
+        if (err.message === "User denied Geolocation") {
+          setCurrentPosition({ error: err.message });
+        }
+      },
+      options
+    );
+  };
+
   // Pass the context value to the provider's value prop
   const contextValue: MyContextType = {
     user,
@@ -88,23 +106,12 @@ export const MyContextProvider = ({ children, churches }: any) => {
     setCurrentPosition,
     churchesWithLocation,
     setChurchesWithLocation,
+    getCurrentPosition,
   };
 
   useEffect(() => {
     if (global.navigator?.geolocation) {
-      global.navigator.geolocation?.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          setCurrentPosition({ latitude, longitude });
-        },
-        (err) => {
-          console.error("Geolocation error:", err);
-          if (err.message === "User denied Geolocation") {
-            setCurrentPosition({ error: err.message });
-          }
-        },
-        options
-      );
+      getCurrentPosition();
     }
   }, []);
 

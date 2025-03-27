@@ -77,6 +77,8 @@ export default function Home({ churches }: any) {
     }
   }, [churchesWithLocation, currentPosition]);
 
+  const churchesArray = (currentPosition?.error || Object.keys(currentPosition).length === 0) ? churches : filteredChurches
+
   return (
     <>
       <Head>
@@ -161,10 +163,10 @@ export default function Home({ churches }: any) {
           </div>
         ) : null}
 
-        {!initialLoading && filteredChurches.length > 0 ? (
-          <Slider content={filteredChurches} />
+        {!initialLoading && churchesArray.length > 0 ? (
+          <Slider content={churchesArray} />
         ) : null}
-        {!initialLoading && filteredChurches.length === 0 ? (
+        {!initialLoading && churchesArray.length === 0 ? (
           <div
             style={{ maxWidth: "1200px", margin: "auto", marginTop: "2rem" }}
           >
