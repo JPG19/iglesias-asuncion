@@ -568,7 +568,7 @@ main .grid-container .grid-item h3 {
   font-weight: 700;
 }
 
-main .title-container input::placeholder  {
+main .title-container input::placeholder {
   color: #fff;
   opacity: 1; /* Firefox */
 }
@@ -588,17 +588,17 @@ main .title-container select:hover {
   opacity: 0.8;
 }
 
-main .contact {
+.id-title {
+  align-items: center;
+}
+
+.id-title a svg {
+  font-size: 3rem;
   color: #fff;
 }
 
-main .contact h3 {
-  text-align: center;
-  padding-bottom: 15px;
-}
-
-main .contact svg {
-  font-size: 3rem;
+.flex-container.text-white svg {
+  font-size: 2rem;
 }
 
 .about-us {
@@ -664,10 +664,6 @@ form input:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.contact h2 {
-  font-size: 2rem;
 }
 
 .contact label {
@@ -918,7 +914,6 @@ form input:hover {
   .dropdown-container {
     flex-direction: column;
   }
-
 }
 
 /* Small mobile */

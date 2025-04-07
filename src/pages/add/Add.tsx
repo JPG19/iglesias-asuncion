@@ -7,7 +7,6 @@ const Add = () => {
   const { user, currentPosition } = useContext(MyContext);
   const [churchSent, setChurchSent] = useState<boolean>(false);
   const [images, setImages] = useState<any>([]);
-  const [priests, setPriests] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [mapPosition, setMapPosition] = useState<any>({
@@ -81,18 +80,6 @@ const Add = () => {
     });
     formData.append('Images', imagesArray);
 
-    const priestInputContainer = document.getElementById('priests-container');
-    const priestInputElements = priestInputContainer
-      ? priestInputContainer.querySelectorAll('input')
-      : [];
-
-    const priestsArray: any = [];
-
-    priestInputElements?.forEach((input) => {
-      priestsArray.push(input.value);
-    });
-    formData.append('Priests', priestsArray);
-
     const jsonObject: any = {};
 
     formData?.forEach((value, key) => {
@@ -151,20 +138,6 @@ const Add = () => {
     setImages(clonedImageInputs);
   };
 
-  const addPriestInput = () => {
-    const clonedPriestsInputs: any = [...priests];
-    const inputIndex = clonedPriestsInputs.length;
-    const newButton = (
-      <input
-        key={`priest-${inputIndex}`}
-        id={`priest-${inputIndex}`}
-        type='text'
-      />
-    );
-    clonedPriestsInputs.push(newButton);
-    setPriests(clonedPriestsInputs);
-  };
-
   const variants = {
     hidden: { opacity: 0, y: -50 },
     visible: { opacity: 1, y: 0 },
@@ -201,9 +174,6 @@ const Add = () => {
         <label>Horarios</label>
         <input type='text' name='Schedule' required />
 
-        <label>Capacidad</label>
-        <input type='number' name='Capacity' required />
-
         <div className='flex-container'>
           <div className='checkbox-container'>
             <label>Bautismo</label>
@@ -232,14 +202,6 @@ const Add = () => {
         </button>
         <div className='Image' id='images-container'>
           {images}
-        </div>
-
-        <label>Sacerdotes:</label>
-        <button type='button' onClick={() => addPriestInput()}>
-          Agregar Sacerdote
-        </button>
-        <div className='Priests' id='priests-container'>
-          {priests}
         </div>
 
         {isLoaded ? (

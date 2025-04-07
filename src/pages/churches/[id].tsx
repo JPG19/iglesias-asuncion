@@ -6,6 +6,8 @@ import { Pagination } from "swiper";
 import { useMediaQuery } from "react-responsive";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import EmailIcon from "@mui/icons-material/Email";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import DirectionsRunIcon from "@mui/icons-material/DirectionsRun";
 // import useGeolocation from '@/hooks/useGeolocation';
 import Loading from "@/components/Loading";
 import ToggleSwitch from "../../components/ToggleSwitch";
@@ -51,7 +53,9 @@ const Church = ({ church }: { church: ChurchType }) => {
   });
 
   // const { location, loading, error } = useGeolocation(process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string) as any
-  const { currentPosition } = useContext(MyContext);
+  const { currentPosition, churchesWithLocation } = useContext(MyContext);
+  const distance = churchesWithLocation?.find((ch: any) => ch.ChurchId === church.ChurchId)?.distance
+
   const containerStyle = {
     width: "100%",
     maxWidth: "1400px",
@@ -73,7 +77,7 @@ const Church = ({ church }: { church: ChurchType }) => {
   }, [biggerThanLaptop]);
 
   const position = useMemo(() => {
-    const [latString, lngString] = church.Location?.split(",") || [];
+    const [latString, lngString] = church?.Location?.split(",") || [];
     const lat = latString ? parseFloat(latString.trim()) : 0;
     const lng = lngString ? parseFloat(lngString.trim()) : 0;
 
@@ -168,23 +172,36 @@ const Church = ({ church }: { church: ChurchType }) => {
           })}
         </Swiper>
 
-        <div className="pt-5 text-center">
-          <h2 className="text-2xl text-white font-bold">{church.Name}</h2>
+        <div className="text-center">
+          <div className="flex-container flex-wrap id-title">
+            <h2 className="text-2xl text-white font-bold">{church.Name}</h2>
+            <div className="flex-container">
+            <a href={`tel:${church.Phone}`}>
+              <LocalPhoneIcon />
+            </a>
 
-          <div className="grid-container">
-            <div className="grid-item">
-              <h3>Horario</h3>
+            <a
+              href={`mailto:${church.Email}?subject=Reserva&body=Hola! Quisiera hacer una reserva`}
+            >
+              <EmailIcon />
+            </a>
+            </div>
+            
+          </div>
+
+          <div className="flex-container items-center flex-wrap text-white pb-2 pt-2">
+            <div className="flex items-center gap-2">
+              <AccessTimeIcon />
               <p>{church.Schedule}</p>
             </div>
 
-            <div className="grid-item">
-              <h3>Sacerdotes</h3>
-              <p>{church.Priests.join(", ")}</p>
-            </div>
-
-            <div className="grid-item">
-              <h3>Capacidad</h3>
-              <p>{church.Capacity} Asientos</p>
+            <div className="flex items-center gap-2">
+              {distance ? (
+                <p>
+                  <DirectionsRunIcon />
+                  {`${distance}km`}
+                </p>
+              ) : null}
             </div>
           </div>
         </div>
@@ -221,22 +238,6 @@ const Church = ({ church }: { church: ChurchType }) => {
             className="pt-4 flex-1 min-w-[300px]"
             textClassName={church.Wedding ? "text-white" : ""}
           />
-        </div>
-
-        <div className="pt-5 contact">
-          <h3 style={{ fontWeight: "700" }}>Haz una reserva</h3>
-
-          <div className="flex-container">
-            <a href={`tel:${church.Phone}`}>
-              Telefono <LocalPhoneIcon />
-            </a>
-
-            <a
-              href={`mailto:${church.Email}?subject=Reserva&body=Hola! Quisiera hacer una reserva`}
-            >
-              Email <EmailIcon />
-            </a>
-          </div>
         </div>
 
         {isLoaded ? (
